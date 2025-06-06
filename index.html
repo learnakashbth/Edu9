@@ -260,16 +260,21 @@ SST: [
       };
       contentSection.appendChild(backButton);
 
-      // Add content dynamically
-      content[section].forEach((item) => {
-        const link = document.createElement('a');
-        link.href = item.link;
-        link.textContent = item.title;
-        link.target = '_blank';
-        contentSection.appendChild(link);
-      });
-    }
-
+  
+      // Add content dynamically with embedded video player start.
+content[section].forEach((item) => {
+  const link = document.createElement('a');
+  link.href = "#";
+  link.textContent = item.title;
+  link.onclick = (e) => {
+    e.preventDefault();
+    document.getElementById("videoSource").src = item.link;
+    document.getElementById("mainVideo").load();
+    document.getElementById("video-player").style.display = "block";
+  };
+  contentSection.appendChild(link);
+});
+//new dynamic views end
     // Function to check password and show the content accordingly
     function checkPassword() {
       const enteredPassword = document.getElementById("password").value;
@@ -326,7 +331,13 @@ SST: [
 
   <!-- Content Section -->
   <div class="content-section" style="display:none;"></div>
-
+<!-- Video Player Section new-->
+<div id="video-player" style="display: none; text-align: center; margin: 20px;">
+  <video id="mainVideo" width="90%" controls>
+    <source id="videoSource" src="" type="application/x-mpegURL">
+  </video>
+</div>
+  <!--end-->
   <script>
     // Automatically prompt for password when the page loads
     window.onload = showPasswordScreen;
