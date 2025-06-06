@@ -1,0 +1,335 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Subject and Live Videos with Password</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background-color: #007bff;
+      color: white;
+    }
+
+    header img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 4px solid white;
+    }
+
+    .section-title {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 24px;
+      color: #333;
+    }
+
+    .subjects-section {
+      margin: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .live-box {
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      padding: 20px;
+      background-color: green;
+      color: white;
+      font-weight: bold;
+      font-size: 24px;
+      border-radius: 10px;
+      margin: 10px auto;
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .box {
+      width: 300px;
+      border: 2px solid #007bff;
+      border-radius: 10px;
+      background-color: orange; /* Subject button color changed to orange */
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .box h3 {
+      margin: 0;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    .box:hover {
+      background-color: #e67e22;
+    }
+
+    .content-section {
+      margin: 20px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .content-section a {
+      display: block;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      padding: 10px 20px;
+      background-color: gray;  /* Changed interior button color to gray */
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .content-section a:hover {
+      background-color: #505050;
+    }
+
+    /* Password Screen Styles */
+    .password-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .password-box {
+      padding: 20px;
+      background-color: #333;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    .password-input {
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      width: 250px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    .password-button {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .error-message {
+      margin-top: 10px;
+      color: red;
+      display: none;
+    }
+  </style>
+  <script>
+    // Data for subjects and live videos
+    const content = {
+   
+        Maths: [
+  { title: "Number System L-1", link: "https://www.youtube.com/live/n4eSPzaivrw?si=3bFBXhZkddA7VZun" },
+  { title: "Number System L-2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4251377/173375116080771815381/index_1.m3u8" },
+  { title: "Number System L-3", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4252327/173383691221618296383/index_1.m3u8" },
+  { title: "Polynomial L-1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4255484/173410799833351097666/173410799833351097666_1097666.m3u8" },
+  { title: "Polynomial L-2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4256107/173419593288961097666/173419593288961097666_1097666.m3u8" },
+  { title: "Euclid Geometry", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4264865/173471303034371097666/index_5.m3u8" },
+  { title: "Coordinate Geometry", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4256885/173435382082878296383/index_4.m3u8" },
+  { title: "Linear Equation in Two Variables", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4261742/173444164843561097666/index_5.m3u8" },
+  { title: "Lines and Angles L-1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4265523/173479848021661097666/index_5.m3u8" },
+  { title: "Lines and Angles L-2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4266372/173496085411631097666/index_5.m3u8" },
+  { title: "Maths Doubt Solving", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4267186/173504663185691097666/index_3.m3u8" },
+  { title: "Triangle L-1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4269591/173531720472571097666/index_5.m3u8" },
+  { title: "Triangle L-2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4270076/173540322468851097666/index_5.m3u8" },
+  { title: "Quadrilateral Theory L-1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4270768/173556318575378296383/173556318575378296383_8296383.m3u8?start=1735558200&end=1735563600" },
+  { title: "Quadrilateral L-2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4271517/173565290321368296383/173565290321368296383_8296383.m3u8?start=1735646400&end=1735651800" },
+  { title: "Quadrilaterals L-3", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4273635/173592036121211097666/173592036121211097666_1097666.m3u8?start=1735916400&end=1735921800" }
+],
+Science: [
+  { title: "Is Matters Around Us Pure", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4255350/173409514939528296383/173409514939528296383_8296383.m3u8" },
+  { title: "Motion L-1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4253504/173392219044888296383/index_4.m3u8" },
+  { title: "Motion L-2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4254525/173400862388838296383/index_4.m3u8" },
+  { title: "Force and Laws - L1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4262488/173452604118008296383/index_3.m3u8" },
+  { title: "Force and Laws - L2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4263416/173461160526398296383/index_3.m3u8" },
+  { title: "Tissue - L1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4264737/173469917741108296383/index_3.m3u8" },
+  { title: "Tissue - L2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4265460/173478570995698296383/index_3.m3u8" },
+  { title: "Work and Energy L-1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4267859/173513192018058296383/index_3.m3u8" },
+  { title: "Work and Energy L-2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4268674/173521751271408296383/index_3.m3u8" },
+  { title: "Gravitation - L1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4269506/173530456116488296383/index_3.m3u8" },
+  { title: "Gravitation L-2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4270014/173539026966468296383/index_3.m3u8" },
+  { title: "Science Doubt Solving", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4255959/173417998996028296383/173417998996028296383_8296383.m3u8" },
+  { title: "Atom and Molecules 1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4272032/173573673323138296383/173573673323138296383_8296383.m3u8?start=1735731000&end=1735736400" },
+  { title: "Atom and Molecules 2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4272611/173582243150658296383/173582243150658296383_8296383.m3u8?start=1735817400&end=1735822800" },
+  { title: "Structure of Atom 1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4273520/173590921458708296383/173590921458708296383_8296383.m3u8?start=1735904700&end=1735910100" },
+],
+SST: [
+  { title: "French Revolution L-1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4251482/173376351436511097666/index_5.m3u8" },
+  { title: "French Revolution L-2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4252414/173384829840671097666/index_5.m3u8" },
+  { title: "SST Doubt Solving", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4266453/173497023381708296383/index_1.m3u8" },
+  { title: "Poverty as a Challenge", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4261094/173436822217651097666/index_5.m3u8" },
+  { title: "Electoral Politics", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4267954/173514479022351097666/index_1.m3u8" },
+  { title: "Physical Features of India", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4268796/173523090113311097666/index_1.m3u8" },
+  { title: "Constitution Design", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4261094/173436822217651097666/index_5.m3u8" },
+  { title: "India - Size and Location", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4261843/173445361970538296383/index_3.m3u8" },
+  { title: "Socialism in Europe - L1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4270876/173557622347881097666/index_3.m3u8" },
+  { title: "Socialism in Europe - L2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4263660/173462581827241097666/index_1.m3u8" },
+  { title: "Food Security in India", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4267282/173505813029018296383/173505813029018296383_8296383.m3u8?start=1735052400&end=1735057800" },
+  { title: "The Rise of Nazism - Hitler L-1", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4270876/173557622347881097666/index_3.m3u8" },
+  { title: "Nazism and the Rise of Hitler - L2", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4271548/173566175063361097666/173566175063361097666_1097666.m3u8?start=1735657200&end=1735662600" },
+  { title: "Doubt Solving Class", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4272063/173574817413761097666/173574817413761097666_1097666.m3u8?start=1735743600&end=1735749000" },
+  { title: "Working in Institutions", link: "https://d1qcficr3lu37x.cloudfront.net/file_library/videos/channel_vod_non_drm_hls/4272758/173583702838531097666/173583702838531097666_1097666.m3u8?start=1735830000&end=1735835400" }
+], 
+
+ 
+      Live: [
+        { title: "🔴 Live class 9 (Starts at 5:05 PM)", link: "https://d2xqn12y4qo6nr.cloudfront.net/out/v1/4dacc3cc62ed4047b817b91580e11584/index.m3u8" },
+        { title: "🔴 Live class 9 (Starts at 8:35 PM)", link: "https://d1kw75zcv4u98c.cloudfront.net/out/v1/287810d967cc428e9bd992002e55b72c/index.m3u8" },
+      ]
+    };
+
+    // Admin password
+    const correctPassword = "";
+
+    // Function to show content
+    function showContent(section) {
+      const contentSection = document.querySelector('.content-section');
+      const subjectsSection = document.querySelector('.subjects-section');
+      const liveBox = document.querySelector('.live-box');
+
+      // Hide subjects section and live box, show content
+      subjectsSection.style.display = 'none';
+      liveBox.style.display = 'none';
+      contentSection.style.display = 'flex';
+
+      // Set the title to be the subject name
+      const subjectTitle = document.createElement('h2');
+      subjectTitle.textContent = section;
+      contentSection.appendChild(subjectTitle);
+
+      // Clear existing content
+      contentSection.innerHTML = '';
+      contentSection.appendChild(subjectTitle);
+
+      // Add a back button
+      const backButton = document.createElement('button');
+      backButton.textContent = 'Back to Subjects';
+      backButton.style.cssText = `
+        margin-bottom: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      `;
+      backButton.onclick = () => {
+        contentSection.style.display = 'none';
+        subjectsSection.style.display = 'flex';
+        liveBox.style.display = 'block';
+      };
+      contentSection.appendChild(backButton);
+
+      // Add content dynamically
+      content[section].forEach((item) => {
+        const link = document.createElement('a');
+        link.href = item.link;
+        link.textContent = item.title;
+        link.target = '_blank';
+        contentSection.appendChild(link);
+      });
+    }
+
+    // Function to check password and show the content accordingly
+    function checkPassword() {
+      const enteredPassword = document.getElementById("password").value;
+
+      if (enteredPassword === correctPassword) {
+        document.querySelector(".password-screen").style.display = "none";
+        document.querySelector(".subjects-section").style.display = "flex";
+      } else {
+        document.querySelector(".error-message").style.display = "block";
+      }
+    }
+
+    // Display password screen
+    function showPasswordScreen() {
+      document.querySelector(".password-screen").style.display = "flex";
+    }
+  </script>
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <img src="https://ar-hosting.pages.dev/1732763392592.jpg" alt="Logo">
+    <h1>AKASH SINGH LIVE</h1>
+  </header>
+
+  <!-- Live Button -->
+  <div class="live-box" onclick="showContent('Live')">
+    LIVE
+  </div>
+
+  <!-- Subjects Section -->
+  <div class="section-title">Subjects</div>
+  <div class="subjects-section" style="display:none;">
+    <div class="box" onclick="showContent('Maths')">
+      <h3>Maths</h3>
+    </div>
+    <div class="box" onclick="showContent('Science')">
+      <h3>Science</h3>
+    </div>
+    <div class="box" onclick="showContent('SST')">
+      <h3>SST</h3>
+    </div>
+  </div>
+
+  <!-- Password Screen -->
+  <div class="password-screen" style="display:none;">
+    <div class="password-box">
+      <h2>Enter Admin Password</h2>
+      <input type="password" id="password" class="password-input" placeholder="Password">
+      <button class="password-button" onclick="checkPassword()">Submit</button>
+      <div class="error-message">Incorrect Password. Try Again!</div>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="content-section" style="display:none;"></div>
+
+  <script>
+    // Automatically prompt for password when the page loads
+    window.onload = showPasswordScreen;
+  </script>
+</body>
+</html>
