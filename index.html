@@ -1,75 +1,112 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/>
-<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-</title></title> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❤️🔥LEARN AKASH❤️🔥</title>
     <style>
-        /* Your existing CSS remains the same */
-        body { margin: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; }
-        header { text-align: center; padding: 20px; background-color: #007bff; color: white; }
-        header img { width: 150px; height: 150px; border-radius: 50%; border: 4px solid white; }
-        .section-title { text-align: center; margin: 20px 0; font-size: 24px; color: #333; }
-        .subjects-section { margin: 20px; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .live-box { width: 90%; max-width: 500px; text-align: center; padding: 20px; background-color: green; color: white; font-weight: bold; font-size: 24px; border-radius: 10px; margin: 10px auto; cursor: pointer; position: relative; display: flex; justify-content: center; align-items: center; }
-        .box { width: 300px; border: 2px solid #007bff; border-radius: 10px; background-color: orange; text-align: center; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); cursor: pointer; }
-        .box h3 { margin: 0; font-size: 20px; color: #fff; }
-        .box:hover { background-color: #e67e22; }
-        .content-section { margin: 20px; display: none; flex-direction: column; gap: 10px; align-items: center; }
-        .content-section a { display: block; width: 90%; max-width: 500px; text-align: center; padding: 10px 20px; background-color: gray; color: white; text-decoration: none; font-size: 16px; font-weight: bold; border-radius: 5px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
-        .content-section a:hover { background-color: #505050; }
-        /* Password Screen Styles */
-        .password-screen { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; color: white; z-index: 1000; }
-        .password-box { padding: 20px; background-color: #333; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); text-align: center; }
-        .password-input { padding: 10px; font-size: 16px; margin-bottom: 20px; width: 250px; border-radius: 5px; border: none; }
-        .password-button { padding: 10px 20px; background-color: #007bff; color: white; font-size: 16px; border: none; border-radius: 5px; cursor: pointer; }
-        .error-message { margin-top: 10px; color: red; display: none; }
-        #video-player { display: none; text-align: center; margin: 20px; }
+        body { 
+            margin: 0; 
+            font-family: Arial, sans-serif; 
+            background-color: #f4f4f4; 
+            padding-top: 60px; /* Space for fixed video player */
+        }
+        
+        /* Video Player at Top */
+        #video-player {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: black;
+            z-index: 1000;
+            display: none;
+        }
+        
+        #mainVideo {
+            width: 100%;
+            max-height: 300px;
+        }
+        
+        .close-video {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        
+        /* Rest of your existing CSS */
+        header { 
+            text-align: center; 
+            padding: 20px; 
+            background-color: #007bff; 
+            color: white; 
+            margin-top: 60px; /* Push header below video player */
+        }
+        
+        /* ... keep all your other existing CSS ... */
     </style>
-</head> 
-<body> 
-    <!-- Header Section --> 
-    <header> 
-        <img src="https://ar-hosting.pages.dev/1749176558930.png" alt="Logo"> 
-        <h1>LEARN AKASH</h1> 
-    </header> 
-
-    <!-- Live Button --> 
-    <div class="live-box" onclick="showContent('Live')"> LIVE </div> 
-
-    <!-- Subjects Section --> 
-    <div class="section-title">Subjects</div> 
-    <div class="subjects-section" style="display:none;"> 
-        <div class="box" onclick="showContent('Maths')"> <h3>Maths</h3> </div> 
-        <div class="box" onclick="showContent('Science')"> <h3>Science</h3> </div> 
-        <div class="box" onclick="showContent('SST')"> <h3>SST</h3> </div> 
-    </div> 
-
-    <!-- Password Screen --> 
-    <div class="password-screen"> 
-        <div class="password-box"> 
-            <h2>Enter Password</h2> 
-            <input type="password" id="password" class="password-input" placeholder="Password"> 
-            <button class="password-button" onclick="checkPassword()">Submit</button> 
-            <div class="error-message">Incorrect Password😔</div> 
-        </div> 
-    </div> 
-
-    <!-- Content Section --> 
-    <div class="content-section"></div>
-
-    <!-- Video Player Section -->
+</head>
+<body>
+    <!-- Video Player at the VERY TOP -->
     <div id="video-player">
-        <video id="mainVideo" width="100%" controls>
+        <video id="mainVideo" controls>
             <source id="videoSource" src="" type="application/x-mpegURL">
-            Your browser does not support the video tag.
         </video>
-        <button onclick="document.getElementById('video-player').style.display = 'none'" 
-                style="margin-top: 10px; padding: 8px 16px; background: #ff0000; color: white; border: none; border-radius: 4px;">
-            Close Video
-        </button>
+        <button class="close-video" onclick="closeVideo()">×</button>
     </div>
+
+    <!-- Rest of your HTML remains the same -->
+    <header>
+        <img src="https://ar-hosting.pages.dev/1749176558930.png" alt="Logo">
+        <h1>LEARN AKASH</h1>
+    </header>
+
+    <!-- ... rest of your existing HTML ... -->
+
+    <script>
+        // Modified showContent function to play videos at top
+        function showContent(section) {
+            // ... your existing code ...
+            
+            content[section].forEach((item) => {
+                const link = document.createElement('a');
+                link.href = "#";
+                link.textContent = item.title;
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    playVideoAtTop(item.link);
+                };
+                contentSection.appendChild(link);
+            });
+        }
+
+        // New function to play video at top
+        function playVideoAtTop(videoUrl) {
+            const videoPlayer = document.getElementById("video-player");
+            const videoSource = document.getElementById("videoSource");
+            
+            videoSource.src = videoUrl;
+            document.getElementById("mainVideo").load();
+            videoPlayer.style.display = "block";
+            
+            // Scroll to top to see the video
+            window.scrollTo(0, 0);
+        }
+
+        function closeVideo() {
+            document.getElementById("video-player").style.display = "none";
+            document.getElementById("videoSource").src = "";
+        }
+        
+        // ... rest of your existing JavaScript ...
+    </script>
+</body>
+</html>
 
     <script>
         // Data for subjects and live videos
